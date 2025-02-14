@@ -1,5 +1,9 @@
-// @ts-check
-import { defineConfig } from 'astro/config';
+import { defineConfig } from 'astro/config'
+import node from '@astrojs/node' // Nombre correcto del adaptador
 
-// https://astro.build/config
-export default defineConfig({});
+export default defineConfig({
+    output: 'server', // Habilita SSR
+    adapter: node({
+        mode: 'standalone', // o 'middleware'
+    }),
+})

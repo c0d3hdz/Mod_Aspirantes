@@ -1,11 +1,54 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
+import pool from '../lib/db.js';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+let datos = [];
+try {
+	const [rows] = await pool.query('SELECT * FROM alumnos ');
+	datos = rows || []; 
+	console.log("Datos obtenidos:"); // Depuración
+	} catch (err) {
+	console.error("Error en la consulta:");
+	}
 ---
+<h1 class="Title ">Aspirantes</h1>
+<div class="container">
+	{datos.map((aspirantes) => ( 
+		<div class="Card"> 
+			<span>{aspirantes.No_Ficha} </span> 
+			<p class="Name">{aspirantes.Nombre} {aspirantes.Apellido_Paterno} {aspirantes.Apellido_Materno} </p>
+		</div>
+	))}
+</ul>
 
-<Layout>
-	<Welcome />
-</Layout>
+<style>
+	*{
+		font-family: proxima-nova, sans-serif;
+	}
+	.Title{
+		text-align: center;
+		display: block;
+	}
+	.container {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 20px;
+		justify-content: center;
+	}
+	.Card {
+		width: 190px;
+		height: 254px;
+		padding:20px ;
+		box-sizing: content-box;
+		border-radius: 30px;
+		background: rgba(211, 211, 211, 0.21);
+		box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 50px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 26px -18px inset;
+	}
+	.Card span {
+		font-size: 20px;
+		font-weight: bold;
+	}
+	.Card .Name {
+		font-size: 16px;
+		font-weight: bold;
+	}
+</style>
