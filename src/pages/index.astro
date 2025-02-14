@@ -1,7 +1,8 @@
 ---
+import Layout from '../layouts/Layout.astro';
 import pool from '../lib/db.js';
 
-let datos = [];
+let datos: { No_Ficha: number; Nombre: string; Apellido_Paterno: string; Apellido_Materno: string; }[] = [];
 try {
 	const [rows] = await pool.query('SELECT * FROM alumnos ');
 	datos = rows || []; 
@@ -10,16 +11,17 @@ try {
 	console.error("Error en la consulta:");
 	}
 ---
+<Layout>
 <h1 class="Title ">Aspirantes</h1>
 <div class="container">
-	{datos.map((aspirantes) => ( 
+	{datos.map((dato) => ( 
 		<div class="Card"> 
-			<span>{aspirantes.No_Ficha} </span> 
-			<p class="Name">{aspirantes.Nombre} {aspirantes.Apellido_Paterno} {aspirantes.Apellido_Materno} </p>
+			<span>{dato.No_Ficha} </span> 
+			<p class="Name">{dato.Nombre} {dato.Apellido_Paterno} {dato.Apellido_Materno} </p>
 		</div>
 	))}
-</ul>
-
+</div>
+</Layout>
 <style>
 	*{
 		font-family: proxima-nova, sans-serif;
